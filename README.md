@@ -1,0 +1,2 @@
+# Project-Sekai-
+Pjsk Gamepedia
