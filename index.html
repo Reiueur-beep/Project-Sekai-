@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Gamepedia</title>
+  <style>
+    /* ===== RESET & GLOBAL ===== */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:"Poppins",sans-serif;
+      background:linear-gradient(180deg,#071018 0%,#081424 100%);
+      color:#e6edf3;
+      display:flex;flex-direction:column;align-items:stretch;
+    }
+
+    /* ===== HEADER ===== */
+    header{
+      padding:36px 20px 18px;
+      text-align:center;
+      background:linear-gradient(90deg,#142850 0%,#27496d 100%);
+      border-bottom:3px solid rgba(0,168,204,0.12);
+    }
+    header h1{color:#ffffff;font-size:2rem;margin-bottom:8px}
+    header p{color:#b6c6d3;font-size:0.95rem}
+
+    /* ===== NAVBAR ===== */
+    .navbar{
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      padding:12px 10px;
+      background:#0f1720;
+      border-bottom:2px solid rgba(0,168,204,0.08);
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .nav-item{
+      color:#cfeef7;
+      padding:8px 14px;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:600;
+      cursor:pointer;
+      transition:all .18s ease;
+      background:transparent;
+      border:1px solid transparent;
+    }
+    .nav-item:hover{color:#00e0ff; transform:translateY(-2px)}
+    .nav-item.active{
+      color:#00202a;
+      background:linear-gradient(90deg,#00c7ff,#00e0ff);
+      box-shadow:0 6px 18px rgba(0,200,255,0.12);
+    }
+
+    /* ===== MAIN & SECTIONS ===== */
+    main{flex:1;padding:28px 18px; max-width:1100px; margin:0 auto; width:100%}
+    .content-section{display:none}
+    .content-section.active{display:block; animation:fadeIn .28s ease}
+    @keyframes fadeIn{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
+
+    /* ===== HOME GRID BUTTONS ===== */
+    .button-grid{
+      display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:8px;
+    }
+    .btn{
+      background:#0f1720;
+      color:#dff9ff;
+      padding:14px 22px;
+      border-radius:14px;
+      min-width:130px;
+      text-align:center;
+      font-weight:700;
+      box-shadow:inset 0 -2px 0 rgba(0,0,0,0.2);
+      cursor:pointer;
+      transition:all .16s ease;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .btn:hover{transform:translateY(-4px); background:linear-gradient(180deg,#111827,#18232b); color:#00e0ff}
+
+    /* ===== ABOUT CARD ===== */
+    .about-card{
+      background:#101827;
+      border-radius:16px;
+      padding:22px;
+      display:flex;
+      gap:20px;
+      align-items:center;
+      max-width:960px;
+      margin:18px auto 0;
+      box-shadow:0 6px 28px rgba(0,200,255,0.06), 0 0 18px rgba(0,168,204,0.03) inset;
+      border:1px solid rgba(0,168,204,0.06);
+    }
+    .profile-pic{
+      width:180px;height:180px;border-radius:12px;object-fit:cover;
+      border:4px solid #00c7ff; box-shadow:0 6px 28px rgba(0,200,255,0.12);
+    }
+    .about-info{color:#d7e7ee;text-align:left;max-width:640px}
+    .about-info h2{color:#00e0ff;margin-bottom:8px}
+    .about-info p{margin:8px 0;color:#c6d6df}
+
+    /* ===== CONTACT LIST ===== */
+    .contact-list{display:flex;flex-direction:column;gap:12px;align-items:center;margin-top:10px}
+    .contact-item{
+      width:100%;
+      max-width:560px;
+      background:#0f1720;
+      padding:12px 14px;border-radius:12px;display:flex;gap:12px;align-items:center;
+      box-shadow:0 6px 18px rgba(0,168,204,0.04);
+      transition:transform .16s ease, box-shadow .16s ease;
+      border:1px solid rgba(0,168,204,0.03);
+    }
+    .contact-item:hover{transform:translateY(-4px); box-shadow:0 14px 30px rgba(0,168,204,0.12)}
+    .contact-item img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,168,204,0.12))}
+    .contact-item a{color:#00e0ff;text-decoration:none;font-weight:600}
+    .contact-item span{color:#d7e7ee}
+
+    /* ===== TOPUP (simple) ===== */
+    .topup-box{background:#0f1720;padding:20px;border-radius:12px;max-width:560px;margin:12px auto;text-align:left;border:1px solid rgba(0,168,204,0.03)}
+
+    /* ===== EVENTS SECTION ===== */
+    .events-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .event-card {
+      background: #101827;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0, 200, 255, 0.08);
+      border: 1px solid rgba(0, 168, 204, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .event-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 200, 255, 0.12);
+    }
+    
+    .event-header {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .event-title {
+      color: #00e0ff;
+      font-size: 1.3rem;
+      margin: 0;
+    }
+    
+    .event-badge {
+      background: linear-gradient(90deg, #00c7ff, #00e0ff);
+      color: #00202a;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    
+    .event-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .event-detail {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .event-label {
+      color: #8b9bb4;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+    
+    .event-value {
+      color: #e6edf3;
+      font-weight: 600;
+    }
+    
+    .event-description {
+      color: #c6d6df;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+    
+    .event-characters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .character-tag {
+      background: rgba(0, 168, 204, 0.1);
+      color: #00c7ff;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+    }
+
+    /* ===== CARDS SECTION ===== */
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .card-item {
+      background: #101827;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 200, 255, 0.08);
+      border: 1px solid rgba(0, 168, 204, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .card-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 200, 255, 0.12);
+    }
+    
+    .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border: 2px solid #00c7ff;
+    }
+    
+    .card-name {
+      color: #00e0ff;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    
+    .card-details {
+      color: #c6d6df;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+    
+    .card-rarity {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    
+    .rarity-4star {
+      background: linear-gradient(90deg, #ffd700, #ffed4e);
+      color: #8a6d00;
+    }
+    
+    .rarity-3star {
+      background: linear-gradient(90deg, #c084fc, #d8b4fe);
+      color: #5b21b6;
+    }
+    
+    .rarity-2star {
+      background: linear-gradient(90deg, #60a5fa, #93c5fd);
+      color: #1e40af;
+    }
+
+    /* ===== COSTUMES SECTION ===== */
+    .coming-soon {
+      text-align: center;
+      padding: 60px 20px;
+      background: #101827;
+      border-radius: 16px;
+      margin-top: 20px;
+      box-shadow: 0 6px 20px rgba(0, 200, 255, 0.08);
+      border: 1px solid rgba(0, 168, 204, 0.06);
+    }
+    
+    .coming-soon-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: #00c7ff;
+    }
+    
+    .coming-soon h2 {
+      color: #00e0ff;
+      margin-bottom: 10px;
+    }
+    
+    .coming-soon p {
+      color: #c6d6df;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ===== FOOTER STYLES ===== */
+    .wiki-footer {
+      background: #0a0f1c;
+      border-top: 1px solid rgba(0, 168, 204, 0.1);
+      margin-top: 50px;
+      padding: 40px 20px 20px;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .footer-section h3 {
+      color: #00e0ff;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 8px;
+    }
+    
+    .footer-links a {
+      color: #c6d6df;
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .footer-links a:hover {
+      color: #00e0ff;
+    }
+    
+    .footer-links .icon {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0, 168, 204, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .footer-bottom p {
+      color: #8b9bb4;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+    
+    .last-modified {
+      color: #8b9bb4;
+      font-size: 0.85rem;
+    }
+    
+    .copyright {
+      color: #8b9bb4;
+      font-size: 0.85rem;
+    }
+
+    /* ===== MODAL STYLES ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background: linear-gradient(135deg, #101827 0%, #0f1720 100%);
+      border-radius: 16px;
+      padding: 28px;
+      max-width: 95%;
+      width: 95%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 200, 255, 0.15);
+      border: 1px solid rgba(0, 168, 204, 0.1);
+      transform: translateY(20px);
+      transition: transform 0.3s;
+    }
+    
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 168, 204, 0.2);
+      padding-bottom: 12px;
+    }
+    
+    .modal-title {
+      color: #00e0ff;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: #c6d6df;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .close-btn:hover {
+      color: #00e0ff;
+    }
+    
+    .game-info-section {
+      margin-bottom: 20px;
+    }
+    
+    .game-info-section h3 {
+      color: #00c7ff;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .game-info-section p {
+      color: #c6d6df;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    .game-info-section ul {
+      color: #c6d6df;
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+    
+    .game-info-section li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    /* ===== CHARACTERS MODAL CONTENT ===== */
+    .group-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    
+    .group-btn {
+      background: #0f1720;
+      color: #dff9ff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 168, 204, 0.1);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+    }
+    
+    .group-btn:hover {
+      background: rgba(0, 200, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .group-btn.active {
+      background: linear-gradient(90deg, #00c7ff, #00e0ff);
+      color: #00202a;
+      box-shadow: 0 4px 12px rgba(0, 200, 255, 0.2);
+    }
+    
+    .group-title {
+      text-align: center;
+      color: #00e0ff;
+      margin-bottom: 24px;
+      font-size: 1.8rem;
+    }
+    
+    .group-description {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      color: #c6d6df;
+      line-height: 1.6;
+    }
+    
+    .members-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 20px;
+    }
+    
+    .member-card {
+      background: #101827;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      box-shadow: 0 6px 20px rgba(0, 200, 255, 0.08);
+      border: 1px solid rgba(0, 168, 204, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .member-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 200, 255, 0.12);
+    }
+    
+    .member-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 2px solid #00c7ff;
+      box-shadow: 0 4px 12px rgba(0, 200, 255, 0.15);
+    }
+    
+    .member-info {
+      flex: 1;
+    }
+    
+    .member-name {
+      color: #00e0ff;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    
+    .member-details {
+      color: #c6d6df;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+    
+    .member-details p {
+      margin: 4px 0;
+    }
+    
+    .member-description {
+      color: #b6c6d3;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* ===== SEARCH BAR ===== */
+    .search-container {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .search-bar {
+      width: 100%;
+      max-width: 500px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 168, 204, 0.2);
+      background: #0a0f1c;
+      color: #e6edf3;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .search-bar:focus {
+      outline: none;
+      border-color: #00c7ff;
+      box-shadow: 0 0 0 2px rgba(0, 199, 255, 0.2);
+    }
+    
+    .search-bar::placeholder {
+      color: #8b9bb4;
+    }
+    
+    /* ===== SONGS TABLE ===== */
+    .songs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+    
+    .songs-table th {
+      background: rgba(0, 168, 204, 0.1);
+      color: #00e0ff;
+      padding: 16px 12px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid rgba(0, 168, 204, 0.3);
+    }
+    
+    .songs-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid rgba(0, 168, 204, 0.1);
+      color: #c6d6df;
+    }
+    
+    .songs-table tr:hover {
+      background: rgba(0, 168, 204, 0.05);
+    }
+    
+    .song-name {
+      font-weight: 600;
+      color: #e6edf3;
+    }
+    
+    .difficulty-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .difficulty-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .difficulty-label {
+      min-width: 60px;
+      font-weight: 600;
+    }
+    
+    .difficulty-easy { color: #4ade80; }
+    .difficulty-normal { color: #60a5fa; }
+    .difficulty-hard { color: #f59e0b; }
+    .difficulty-expert { color: #ef4444; }
+    .difficulty-master { color: #c084fc; }
+    .difficulty-append { color: #f472b6; }
+    
+    .note-count {
+      color: #8b9bb4;
+      font-size: 0.85rem;
+    }
+    
+    .mv-type {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      display: inline-block;
+    }
+    
+    .mv-3d {
+      background: rgba(0, 199, 255, 0.2);
+      color: #00e0ff;
+    }
+    
+    .mv-2d {
+      background: rgba(139, 155, 180, 0.2);
+      color: #8b9bb4;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width:880px){
+      .about-card{flex-direction:column;text-align:center}
+      .about-info{text-align:center}
+      .member-card {
+        flex-direction: column;
+        text-align: center;
+      }
+      .member-img {
+        align-self: center;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .members-container {
+        grid-template-columns: 1fr;
+      }
+      .group-selector {
+        flex-direction: column;
+        align-items: center;
+      }
+      .group-btn {
+        width: 100%;
+        max-width: 250px;
+      }
+      .modal-content {
+        padding: 20px;
+        max-width: 98%;
+        width: 98%;
+      }
+      
+      .songs-table {
+        font-size: 0.85rem;
+      }
+      
+      .songs-table th,
+      .songs-table td {
+        padding: 10px 8px;
+      }
+      
+      .difficulty-cell {
+        font-size: 0.8rem;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .songs-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to My Gamepedia!</h1>
+    <p>A wiki dedicated to everything about my favorite rhythm game!</p>
+  </header>
+
+  <nav class="navbar">
+    <div class="nav-item active" data-target="home">Home</div>
+    <div class="nav-item" data-target="about">About Me!</div>
+    <div class="nav-item" data-target="contact">Contact Me Here!</div>
+    <div class="nav-item" data-target="topup">TopUp</div>
+  </nav>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="content-section active">
+      <div class="button-grid">
+        <button class="btn" id="game-btn">🎮 Game</button>
+        <button class="btn" id="characters-btn">🧍 Characters</button>
+        <button class="btn" id="songs-btn">🎵 Songs</button>
+        <button class="btn" id="events-btn">📅 Events</button>
+        <button class="btn" id="cards-btn">🃏 Cards</button>
+        <button class="btn" id="costumes-btn">👗 Costumes</button>
+        <button class="btn">💎 TopUp</button>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="content-section">
+      <div class="about-card">
+        <!-- Pastikan path gambar sesuai: Images/IMG-20251022-WA0020.jpg -->
+        <img class="profile-pic" src="Images/IMG-20251022-WA0020.jpg" alt="Profile">
+        <div class="about-info">
+          <h2>Hai, Aku Rei!</h2>
+          <p><strong>Nama:</strong> Mouu Rei</p>
+          <p><strong>Umur:</strong> 17 tahun</p>
+          <p><strong>Tanggal Lahir:</strong> 22 Oktober 2008</p>
+          <p><strong>Tujuan Pembuatan Web:</strong> Tugas skolah hehe 😆</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="content-section">
+      <div class="contact-list">
+        <div class="contact-item">
+          <img src="Images/google.png" alt="email">
+          <span><strong>Email:</strong> <a href="mailto:sayanobb946@gmail.com">sayanobb946@gmail.com</a></span>
+        </div>
+        <div class="contact-item">
+          <img src="Images/whatsapp.png" alt="wa">
+          <span><strong>WhatsApp:</strong> <a href="https://wa.me/6282352435845" target="_blank">082352435845</a></span>
+        </div>
+        <div class="contact-item">
+          <img src="Images/instagram.png" alt="ig">
+          <span><strong>Instagram:</strong> <a href="https://www.instagram.com/reiiuervav?igsh=MW9vbng2Zm42b3hvcQ==" target="_blank">Reiiuervav</a></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPUP -->
+    <section id="topup" class="content-section">
+      <div class="topup-box">
+        <h3>TopUp</h3>
+        <p>Fitur TopUp akan hadir di update berikutnya. Untuk sekarang, kamu bisa pakai tombol TopUp di Home untuk navigasi cepat.</p>
+      </div>
+    </section>
+
+    <!-- EVENTS -->
+    <section id="events" class="content-section">
+      <h2 style="text-align: center; color: #00e0ff; margin-bottom: 20px;">Current Events</h2>
+      <div class="events-container">
+        
+        <!-- JP Server Event -->
+        <div class="event-card">
+          <div class="event-header">
+            <h3 class="event-title">Stray Bad Bite</h3>
+            <span class="event-badge">JAPAN SERVER</span>
+          </div>
+          <div class="event-details">
+            <div class="event-detail">
+              <span class="event-label">Period</span>
+              <span class="event-value">October 10 - October 20, 2025</span>
+            </div>
+            <div class="event-detail">
+              <span class="event-label">Type</span>
+              <span class="event-value">Challenge Live</span>
+            </div>
+            <div class="event-detail">
+              <span class="event-label">Featured Cards</span>
+              <span class="event-value">4★ An, 4★ Kohane</span>
+            </div>
+          </div>
+          <p class="event-description">
+            Vivid BAD SQUAD is challenged to a street battle by a mysterious new group. 
+            The event features new songs and special rewards for high scores.
+          </p>
+          <div class="event-characters">
+            <span class="character-tag">An Shiraishi</span>
+            <span class="character-tag">Kohane Azusagawa</span>
+            <span class="character-tag">Akito Shinonome</span>
+            <span class="character-tag">Toya Aoyagi</span>
+          </div>
+        </div>
+
+        <!-- Global Server Event -->
+        <div class="event-card">
+          <div class="event-header">
+            <h3 class="event-title">A Moonlit Night's Declaration</h3>
+            <span class="event-badge">GLOBAL SERVER</span>
+          </div>
+          <div class="event-details">
+            <div class="event-detail">
+              <span class="event-label">Period</span>
+              <span class="event-value">October 15 - October 25, 2025</span>
+            </div>
+            <div class="event-detail">
+              <span class="event-label">Type</span>
+              <span class="event-value">Cheerful Carnival</span>
+            </div>
+            <div class="event-detail">
+              <span class="event-label">Featured Cards</span>
+              <span class="event-value">4★ Tsukasa, 4★ Nene</span>
+            </div>
+          </div>
+          <p class="event-description">
+            Wonderlands x Showtime prepares for their biggest performance yet under the moonlight. 
+            Teams compete in this carnival event for special titles and rewards.
+          </p>
+          <div class="event-characters">
+            <span class="character-tag">Tsukasa Tenma</span>
+            <span class="character-tag">Nene Kusanagi</span>
+            <span class="character-tag">Emu Otori</span>
+            <span class="character-tag">Rui Kamishiro</span>
+          </div>
+        </div>
+
+        <!-- Upcoming Event -->
+        <div class="event-card">
+          <div class="event-header">
+            <h3 class="event-title">Close Game/Otome</h3>
+            <span class="event-badge">COMING SOON</span>
+          </div>
+          <div class="event-details">
+            <div class="event-detail">
+              <span class="event-label">Starts</span>
+              <span class="event-value">October 26, 2025</span>
+            </div>
+            <div class="event-detail">
+              <span class="event-label">Type</span>
+              <span class="event-value">Marathon</span>
+            </div>
+            <div class="event-detail">
+              <span class="event-label">Featured Cards</span>
+              <span class="event-value">4★ Mafuyu, 4★ Ena</span>
+            </div>
+          </div>
+          <p class="event-description">
+            25-ji, Nightcord de. members explore themes of identity and self-expression in this emotional event.
+          </p>
+          <div class="event-characters">
+            <span class="character-tag">Mafuyu Asahina</span>
+            <span class="character-tag">Ena Shinonome</span>
+            <span class="character-tag">Kanade Yoisaki</span>
+            <span class="character-tag">Mizuki Akiyama</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CARDS -->
+    <section id="cards" class="content-section">
+      <h2 style="text-align: center; color: #00e0ff; margin-bottom: 20px;">Featured Cards</h2>
+      <div class="cards-container">
+        
+        <!-- Card 1 -->
+        <div class="card-item">
+          <img src="Images/Cards/an_card.jpg" alt="An Shiraishi" class="card-image">
+          <h3 class="card-name">An Shiraishi - Stray Bad Bite</h3>
+          <p class="card-details"><strong>Attribute:</strong> Cool</p>
+          <p class="card-details"><strong>Skill:</strong> Score Boost</p>
+          <p class="card-details"><strong>Group:</strong> Vivid BAD SQUAD</p>
+          <span class="card-rarity rarity-4star">4★</span>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card-item">
+          <img src="Images/Cards/kohane_card.jpg" alt="Kohane Azusagawa" class="card-image">
+          <h3 class="card-name">Kohane Azusagawa - Stray Bad Bite</h3>
+          <p class="card-details"><strong>Attribute:</strong> Pure</p>
+          <p class="card-details"><strong>Skill:</strong> Perfect Lock</p>
+          <p class="card-details"><strong>Group:</strong> Vivid BAD SQUAD</p>
+          <span class="card-rarity rarity-4star">4★</span>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card-item">
+          <img src="Images/Cards/tsukasa_card.jpg" alt="Tsukasa Tenma" class="card-image">
+          <h3 class="card-name">Tsukasa Tenma - Moonlit Declaration</h3>
+          <p class="card-details"><strong>Attribute:</strong> Happy</p>
+          <p class="card-details"><strong>Skill:</strong> Healer</p>
+          <p class="card-details"><strong>Group:</strong> Wonderlands x Showtime</p>
+          <span class="card-rarity rarity-4star">4★</span>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card-item">
+          <img src="Images/Cards/nene_card.jpg" alt="Nene Kusanagi" class="card-image">
+          <h3 class="card-name">Nene Kusanagi - Moonlit Declaration</h3>
+          <p class="card-details"><strong>Attribute:</strong> Mysterious</p>
+          <p class="card-details"><strong>Skill:</strong> Score Boost</p>
+          <p class="card-details"><strong>Group:</strong> Wonderlands x Showtime</p>
+          <span class="card-rarity rarity-4star">4★</span>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card-item">
+          <img src="Images/Cards/mafuyu_card.jpg" alt="Mafuyu Asahina" class="card-image">
+          <h3 class="card-name">Mafuyu Asahina - Close Game/Otome</h3>
+          <p class="card-details"><strong>Attribute:</strong> Cool</p>
+          <p class="card-details"><strong>Skill:</strong> Perfect Lock</p>
+          <p class="card-details"><strong>Group:</strong> 25-ji, Nightcord de.</p>
+          <span class="card-rarity rarity-4star">4★</span>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card-item">
+          <img src="Images/Cards/ena_card.jpg" alt="Ena Shinonome" class="card-image">
+          <h3 class="card-name">Ena Shinonome - Close Game/Otome</h3>
+          <p class="card-details"><strong>Attribute:</strong> Pure</p>
+          <p class="card-details"><strong>Skill:</strong> Healer</p>
+          <p class="card-details"><strong>Group:</strong> 25-ji, Nightcord de.</p>
+          <span class="card-rarity rarity-4star">4★</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- COSTUMES -->
+    <section id="costumes" class="content-section">
+      <div class="coming-soon">
+        <div class="coming-soon-icon">👗</div>
+        <h2>Costumes Section Coming Soon!</h2>
+        <p>We're working hard to bring you detailed information about all the amazing costumes available in Project Sekai. Check back later for updates!</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- WIKI FOOTER -->
+  <footer class="wiki-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Official Links</h3>
+        <ul class="footer-links">
+          <li>
+            <a href="https://pjsekai.sega.jp" target="_blank">
+              <span class="icon">🌐</span>
+              プロジェクトセカイ カラフルステージ！ feat. 初音ミク<br>
+              <small>Official Website</small>
+            </a>
+          </li>
+          <li>
+            <a href="https://discord.gg/pjsekai" target="_blank">
+              <span class="icon">💬</span>
+              プロセカ公式Discordサーバー<br>
+              <small>Official Discord Server</small>
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/pj_sekai" target="_blank">
+              <span class="icon">🐦</span>
+              @pj_sekai<br>
+              <small>Official Twitter</small>
+            </a>
+          </li>
+          <li>
+            <a href="https://youtube.com/pjsekai" target="_blank">
+              <span class="icon">📺</span>
+              プロジェクトセカイ カラフルステージ！ feat. 初音ミク<br>
+              <small>Official YouTube</small>
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Community & Resources</h3>
+        <ul class="footer-links">
+          <li>
+            <a href="https://twitter.com/sekalpedia" target="_blank">
+              <span class="icon">📚</span>
+              Sekalpedia Twitter<br>
+              <small>Wiki Twitter</small>
+            </a>
+          </li>
+          <li>
+            <a href="https://discord.gg/sekalpedia" target="_blank">
+              <span class="icon">💬</span>
+              Sekalpedia Discord<br>
+              <small>Wiki Community Discord</small>
+            </a>
+          </li>
+          <li>
+            <a href="https://sekai.best" target="_blank">
+              <span class="icon">🔍</span>
+              Sekai Viewer<br>
+              <small>Game Information Database</small>
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/pjsekai_eng" target="_blank">
+              <span class="icon">🌍</span>
+              @pjsekai_eng<br>
+              <small>Unofficial English Twitter</small>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="last-modified">
+        Last modified<br>
+        This page was last edited on 30 August 2025, at 22:40.
+      </div>
+      <div class="copyright">
+        Copyright © 2025 My Gamepedia
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL GAME INFO -->
+  <div class="modal-overlay" id="game-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Project Sekai: Colorful Stage!</h2>
+        <button class="close-btn" id="close-game">&times;</button>
+      </div>
+      
+      <div class="game-info-section">
+        <h3>Apa itu Project Sekai?</h3>
+        <p>Project Sekai: Colorful Stage! (プロジェクトセカイ カラフルステージ！) adalah game ritme mobile yang dikembangkan oleh Colorful Palette, sebuah divisi dari Craft Egg, dan diterbitkan oleh SEGA. Game ini menampilkan karakter Virtual Singer Hatsune Miku dan karakter orisinal lainnya dalam lima grup berbeda.</p>
+      </div>
+      
+      <div class="game-info-section">
+        <h3>Grup dalam Project Sekai</h3>
+        <ul>
+          <li><strong>Leo/need</strong> - Grup band sekolah dengan tema musik rock/pop</li>
+          <li><strong>MORE MORE JUMP!</strong> - Grup idol yang terdiri dari mantan idol dan penggemar idol</li>
+          <li><strong>Vivid BAD SQUAD</strong> - Grup street music dengan fokus pada hip-hop dan rap</li>
+          <li><strong>Wonderlands x Showtime</strong> - Grup teater yang berfokus pada pertunjukan panggung</li>
+          <li><strong>25-ji, Nightcord de.</strong> - Grup musik yang membuat lagu melalui komunikasi online di malam hari</li>
+        </ul>
+      </div>
+      
+      <div class="game-info-section">
+        <h3>Fitur Gameplay</h3>
+        <ul>
+          <li><strong>Rhythm Game</strong> - Memainkan lagu dengan mengetuk, menahan, dan menggeser sesuai ritme</li>
+          <li><strong>Live 2D MV</strong> - Menonton music video dengan karakter Live 2D selama pertunjukan</li>
+          <li><strong>Gacha System</strong> - Mendapatkan kartu karakter dengan berbagai rarity melalui gacha</li>
+          <li><strong>Story Mode</strong> - Mengikuti cerita masing-masing grup melalui visual novel</li>
+          <li><strong>Virtual Live</strong> - Menonton konser virtual bersama pemain lain secara real-time</li>
+        </ul>
+      </div>
+      
+      <div class="game-info-section">
+        <h3>Virtual Singers</h3>
+        <p>Selain karakter orisinal, game ini juga menampilkan Virtual Singers seperti Hatsune Miku, Kagamine Rin & Len, Megurine Luka, dan Kaito. Mereka berinteraksi dengan karakter orisinal dan membantu mereka dalam perjalanan musik mereka.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CHARACTERS INFO -->
+  <div class="modal-overlay" id="characters-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Characters - Project Sekai</h2>
+        <button class="close-btn" id="close-characters">&times;</button>
+      </div>
+      
+      <div class="group-selector">
+        <button class="group-btn active" data-group="virtual-singers">Virtual Singers</button>
+        <button class="group-btn" data-group="leo-need">Leo/need</button>
+        <button class="group-btn" data-group="more-more-jump">MORE MORE JUMP!</button>
+        <button class="group-btn" data-group="vivid-bad-squad">Vivid BAD SQUAD</button>
+        <button class="group-btn" data-group="wonderlands-showtime">Wonderlands x Showtime</button>
+        <button class="group-btn" data-group="nightcord">25-ji, Nightcord de.</button>
+      </div>
+
+      <!-- Virtual Singers -->
+      <div class="group-content active" id="virtual-singers">
+        <h2 class="group-title">Virtual Singers</h2>
+        <p class="group-description">Karakter virtual yang membantu setiap grup dalam perjalanan musik mereka. Mereka adalah penyanyi sintetis yang populer di seluruh dunia.</p>
+        
+        <div class="members-container">
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/miku.jpg" alt="Hatsune Miku">
+            <div class="member-info">
+              <h3 class="member-name">Hatsune Miku</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 16 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 31 Agustus</p>
+              </div>
+              <p class="member-description">Virtual Singer paling populer dengan rambut biru ikonik. Dikenal sebagai "diva virtual" dan memiliki suara yang jernih dan energik.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/kagamine-rin.jpg" alt="Kagamine Rin">
+            <div class="member-info">
+              <h3 class="member-name">Kagamine Rin</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 14 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 27 Desember</p>
+              </div>
+              <p class="member-description">Salah satu dari kembar Kagamine dengan suara yang cerah dan energik. Sering menyanyikan lagu-lagu ceria dan upbeat.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/kagamine-len.jpg" alt="Kagamine Len">
+            <div class="member-info">
+              <h3 class="member-name">Kagamine Len</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 14 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 27 Desember</p>
+              </div>
+              <p class="member-description">Kembaran Rin dengan suara yang lebih dalam. Sering tampil dalam lagu-lagu dengan energi maskulin dan kuat.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/megurine-luka.jpg" alt="Megurine Luka">
+            <div class="member-info">
+              <h3 class="member-name">Megurine Luka</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 20 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 30 Januari</p>
+              </div>
+              <p class="member-description">Virtual Singer dengan suara dewasa dan sensual. Dikenal dengan rambut pink panjangnya dan sering menyanyikan lagu-lagu jazz dan pop dewasa.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/kaito.jpg" alt="KAITO">
+            <div class="member-info">
+              <h3 class="member-name">KAITO</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 20 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 17 Februari</p>
+              </div>
+              <p class="member-description">Virtual Singer pria pertama dengan suara bariton yang dalam. Sering menyanyikan balada dan lagu-lagu sentimental.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/meiko.jpg" alt="MEIKO">
+            <div class="member-info">
+              <h3 class="member-name">MEIKO</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 21 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 5 November</p>
+              </div>
+              <p class="member-description">Virtual Singer wanita pertama dengan suara kuat dan bertenaga. Dikenal dengan penampilannya yang dewasa dan elegan.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leo/need -->
+      <div class="group-content" id="leo-need">
+        <h2 class="group-title">Leo/need</h2>
+        <p class="group-description">Sebuah band sekolah yang terdiri dari empat teman masa kecil yang bersatu kembali melalui musik. Mereka fokus pada genre rock dan pop.</p>
+        
+        <div class="members-container">
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/ichika.jpg" alt="Ichika Hoshino">
+            <div class="member-info">
+              <h3 class="member-name">Ichika Hoshino</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 16 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 27 April</p>
+              </div>
+              <p class="member-description">Vokalis dan gitaris utama Leo/need. Seorang gadis pendiam dengan hati yang tulus dan kemampuan musik yang luar biasa.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/saki.jpg" alt="Saki Tenma">
+            <div class="member-info">
+              <h3 class="member-name">Saki Tenma</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 16 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 27 Februari</p>
+              </div>
+              <p class="member-description">Pemain keyboard yang ceria dan optimis. Baru saja kembali ke sekolah setelah lama dirawat di rumah sakit.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/honami.jpg" alt="Honami Mochizuki">
+            <div class="member-info">
+              <h3 class="member-name">Honami Mochizuki</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 16 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 14 Februari</p>
+              </div>
+              <p class="member-description">Drummer yang lembut dan peduli. Dikenal sebagai "ibu" grup karena sifatnya yang selalu merawat orang lain.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/shiho.jpg" alt="Shiho Hinomori">
+            <div class="member-info">
+              <h3 class="member-name">Shiho Hinomori</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 16 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 13 Agustus</p>
+              </div>
+              <p class="member-description">Bassis yang serius dan berdedikasi. Memiliki standar tinggi untuk musik dan berusaha keras untuk menjadi yang terbaik.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MORE MORE JUMP! -->
+      <div class="group-content" id="more-more-jump">
+        <h2 class="group-title">MORE MORE JUMP!</h2>
+        <p class="group-description">Grup idol yang terdiri dari mantan idol, penggemar idol, dan siswa biasa yang bersatu untuk mewujudkan impian mereka di dunia hiburan.</p>
+        
+        <div class="members-container">
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/minori.jpg" alt="Minori Hanasato">
+            <div class="member-info">
+              <h3 class="member-name">Minori Hanasato</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 16 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 6 Desember</p>
+              </div>
+              <p class="member-description">Idol pemula yang sangat antusias dan pekerja keras. Selalu percaya pada kekuatan "keberuntungan" dan tidak pernah menyerah.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/haruka.jpg" alt="Haruka Kiritani">
+            <div class="member-info">
+              <h3 class="member-name">Haruka Kiritani</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 10 Agustus</p>
+              </div>
+              <p class="member-description">Mantan idol terkenal yang mengambil cuti dari industri. Elegan dan berbakat, tetapi memiliki keraguan tentang kembali menjadi idol.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/airi.jpg" alt="Ari Momoi">
+            <div class="member-info">
+              <h3 class="member-name">Ari Momoi</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 5 Mei</p>
+              </div>
+              <p class="member-description">Mantan idol anak yang sekarang bekerja paruh waktu di toko permen. Manis dan energik, dengan pengalaman bertahun-tahun di industri.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/shizuku.jpg" alt="Shizuku Hinomori">
+            <div class="member-info">
+              <h3 class="member-name">Shizuku Hinomori</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 12 Juni</p>
+              </div>
+              <p class="member-description">Siswa biasa tanpa pengalaman idol sebelumnya. Bergabung untuk mendukung teman-temannya dan menemukan bakat tersembunyinya.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vivid BAD SQUAD -->
+      <div class="group-content" id="vivid-bad-squad">
+        <h2 class="group-title">Vivid BAD SQUAD</h2>
+        <p class="group-description">Grup street music yang berfokus pada hip-hop dan rap. Mereka bertemu di area Vivid Street dan berbagi passion untuk musik jalanan.</p>
+        
+        <div class="members-container">
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/kohane.jpg" alt="Kohane Azusagawa">
+            <div class="member-info">
+              <h3 class="member-name">Kohane Azusagawa</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 15 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 10 Maret</p>
+              </div>
+              <p class="member-description">Penyanyi pemalu yang menemukan keberanian melalui musik. Bakatnya yang luar biasa mulai terungkap di Vivid Street.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/an.jpg" alt="An Shiraishi">
+            <div class="member-info">
+              <h3 class="member-name">An Shiraishi</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 12 September</p>
+              </div>
+              <p class="member-description">Penyanyi percaya diri dengan pengalaman panjang di street music. Putri dari pemilik klub terkenal di Vivid Street.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/akito.jpg" alt="Akito Shinonome">
+            <div class="member-info">
+              <h3 class="member-name">Akito Shinonome</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 12 November</p>
+              </div>
+              <p class="member-description">Rapper serius dengan tekad kuat untuk menjadi yang terbaik. Awalnya ragu bergabung tetapi sekarang berkomitmen penuh.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/toya.jpg" alt="Toya Aoyagi">
+            <div class="member-info">
+              <h3 class="member-name">Toya Aoyagi</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 25 April</p>
+              </div>
+              <p class="member-description">Rapper dengan latar belakang musik klasik. Mencari kebebasan berekspresi melalui hip-hop setelah meninggalkan dunia musik klasik.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wonderlands x Showtime -->
+      <div class="group-content" id="wonderlands-showtime">
+        <h2 class="group-title">Wonderlands x Showtime</h2>
+        <p class="group-description">Grup teater yang bertujuan untuk menciptakan pertunjukan paling menghibur di dunia. Mereka beroperasi di Phoenix Wonderland.</p>
+        
+        <div class="members-container">
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/tsukasa.jpg" alt="Tsukasa Tenma">
+            <div class="member-info">
+              <h3 class="member-name">Tsukasa Tenma</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 17 April</p>
+              </div>
+              <p class="member-description">Aktor flamboyan yang bercita-cita menjadi "bintang dunia". Penuh energi dan selalu berusaha membuat orang tersenyum.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/emu.jpg" alt="Emu Otori">
+            <div class="member-info">
+              <h3 class="member-name">Emu Otori</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 16 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 9 September</p>
+              </div>
+              <p class="member-description">Cucu pemilik Phoenix Wonderland. Sangat ceria dan penuh semangat, percaya pada kekuatan "wonderhoy" untuk membawa kebahagiaan.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/nene.jpg" alt="Nene Kusanagi">
+            <div class="member-info">
+              <h3 class="member-name">Nene Kusanagi</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 16 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 9 Januari</p>
+              </div>
+              <p class="member-description">Aktor berbakat dengan kepribadian pemalu. Ahli dalam permainan dan lebih nyaman berinteraksi secara online daripada langsung.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/rui.jpg" alt="Rui Kamishiro">
+            <div class="member-info">
+              <h3 class="member-name">Rui Kamishiro</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 24 Oktober</p>
+              </div>
+              <p class="member-description">Sutradara jenius dengan ide-ide kreatif dan tidak konvensional. Ahli dalam robotika dan efek panggung yang spektakuler.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 25-ji, Nightcord de. -->
+      <div class="group-content" id="nightcord">
+        <h2 class="group-title">25-ji, Nightcord de.</h2>
+        <p class="group-description">Grup musik yang membuat lagu melalui komunikasi online di malam hari. Mereka bertemu di platform Nightcord dan membuat musik bersama tanpa pernah bertemu langsung.</p>
+        
+        <div class="members-container">
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/kanade.jpg" alt="Kanade Yoisaki">
+            <div class="member-info">
+              <h3 class="member-name">Kanade Yoisaki</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 10 Februari</p>
+              </div>
+              <p class="member-description">Komposer utama grup yang menghabiskan hampir seluruh waktunya membuat musik. Percaya bahwa musiknya dapat menyelamatkan orang.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/mafuyu.jpg" alt="Mafuyu Asahina">
+            <div class="member-info">
+              <h3 class="member-name">Mafuyu Asahina</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 27 November</p>
+              </div>
+              <p class="member-description">Siswa berprestasi sempurna di siang hari, tetapi mencari jati dirinya yang sebenarnya melalui musik di malam hari.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/ena.jpg" alt="Ena Shinonome">
+            <div class="member-info">
+              <h3 class="member-name">Ena Shinonome</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 9 April</p>
+              </div>
+              <p class="member-description">Ilustrator yang bertanggung jawab atas artwork grup. Berjuang dengan perfeksionisme dan pencariannya akan pengakuan.</p>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <img class="member-img" src="Images/Characters/mizuki.jpg" alt="Mizuki Akiyama">
+            <div class="member-info">
+              <h3 class="member-name">Mizuki Akiyama</h3>
+              <div class="member-details">
+                <p><strong>Umur:</strong> 17 tahun</p>
+                <p><strong>Ulang Tahun:</strong> 27 Maret</p>
+              </div>
+              <p class="member-description">Video editor yang misterius dan penuh gaya. Selalu mengenakan pakaian imut dan membantu menghubungkan anggota grup.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL SONGS INFO -->
+  <div class="modal-overlay" id="songs-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Songs - Project Sekai</h2>
+        <button class="close-btn" id="close-songs">&times;</button>
+      </div>
+      
+      <div class="search-container">
+        <input type="text" class="search-bar" id="song-search" placeholder="Cari nama lagu disini...">
+      </div>
+      
+      <table class="songs-table" id="songs-table">
+        <thead>
+          <tr>
+            <th>Nama Lagu</th>
+            <th>Tingkat Kesulitan</th>
+            <th>Total Note</th>
+            <th>MV</th>
+          </tr>
+        </thead>
+        <tbody id="songs-body">
+          <!-- Songs will be populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // nav switching & active class
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.content-section');
+
+    function show(id){
+      sections.forEach(s => s.classList.remove('active'));
+      navItems.forEach(n => n.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelector('.nav-item[data-target="'+id+'"]').classList.add('active');
+      // scroll to top of main area (nice UX on mobile)
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    navItems.forEach(n => {
+      n.addEventListener('click', ()=> show(n.getAttribute('data-target')));
+    });
+
+    // Home button functionality
+    document.querySelectorAll('.btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const txt = btn.textContent || btn.innerText;
+        if(txt.includes('TopUp')){ 
+          show('topup'); 
+        } else if (txt.includes('Events')) {
+          show('events');
+        } else if (txt.includes('Cards')) {
+          show('cards');
+        } else if (txt.includes('Costumes')) {
+          show('costumes');
+        }
+      });
+    });
+
+    // Add event listeners for the new buttons
+    document.getElementById('events-btn').addEventListener('click', () => show('events'));
+    document.getElementById('cards-btn').addEventListener('click', () => show('cards'));
+    document.getElementById('costumes-btn').addEventListener('click', () => show('costumes'));
+
+    // Game button functionality
+    const gameBtn = document.getElementById('game-btn');
+    const gameModal = document.getElementById('game-modal');
+    const closeGameBtn = document.getElementById('close-game');
+
+    gameBtn.addEventListener('click', () => {
+      gameModal.classList.add('active');
+    });
+
+    closeGameBtn.addEventListener('click', () => {
+      gameModal.classList.remove('active');
+    });
+
+    // Close modal when clicking outside the content
+    gameModal.addEventListener('click', (e) => {
+      if (e.target === gameModal) {
+        gameModal.classList.remove('active');
+      }
+    });
+
+    // Characters button functionality
+    const charactersBtn = document.getElementById('characters-btn');
+    const charactersModal = document.getElementById('characters-modal');
+    const closeCharactersBtn = document.getElementById('close-characters');
+
+    charactersBtn.addEventListener('click', () => {
+      charactersModal.classList.add('active');
+    });
+
+    closeCharactersBtn.addEventListener('click', () => {
+      charactersModal.classList.remove('active');
+    });
+
+    // Close characters modal when clicking outside the content
+    charactersModal.addEventListener('click', (e) => {
+      if (e.target === charactersModal) {
+        charactersModal.classList.remove('active');
+      }
+    });
+
+    // Group selector functionality with auto-scroll
+    const groupBtns = document.querySelectorAll('.group-btn');
+    const groupContents = document.querySelectorAll('.group-content');
+
+    groupBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const groupId = btn.getAttribute('data-group');
+        
+        // Update active button
+        groupBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Show corresponding content
+        groupContents.forEach(content => {
+          content.classList.remove('active');
+        });
+        const targetContent = document.getElementById(groupId);
+        targetContent.classList.add('active');
+        
+        // Auto-scroll to the top of the modal content
+        const modalContent = charactersModal.querySelector('.modal-content');
+        modalContent.scrollTop = 0;
+      });
+    });
+
+    // ===== SONGS FUNCTIONALITY =====
+    
+    // Songs data - extensive list of PJSK JP version songs
+    const songsData = [
+      // Virtual Singer Original Songs
+      { name: "Tell Your World", easy: 120, normal: 220, hard: 380, expert: 550, master: 720, append: null, mv: "3D" },
+      { name: "Melt", easy: 130, normal: 240, hard: 410, expert: 590, master: 760, append: null, mv: "3D" },
+      { name: "World is Mine", easy: 140, normal: 250, hard: 420, expert: 600, master: 780, append: null, mv: "3D" },
+      { name: "Senbonzakura", easy: 150, normal: 270, hard: 450, expert: 630, master: 810, append: null, mv: "3D" },
+      { name: "Roki", easy: 125, normal: 230, hard: 390, expert: 560, master: 730, append: null, mv: "3D" },
+      { name: "Jigsaw Puzzle", easy: 135, normal: 245, hard: 415, expert: 595, master: 770, append: null, mv: "2D" },
+      
+      // Leo/need Songs
+      { name: "STAGE OF SEKAI", easy: 110, normal: 200, hard: 350, expert: 500, master: 650, append: null, mv: "3D" },
+      { name: "Tale of the Deep-sea Lily", easy: 145, normal: 260, hard: 440, expert: 620, master: 800, append: null, mv: "3D" },
+      { name: "NeedLe", easy: 155, normal: 280, hard: 470, expert: 650, master: 830, append: null, mv: "3D" },
+      { name: "From Tokyo", easy: 120, normal: 220, hard: 380, expert: 550, master: 720, append: null, mv: "2D" },
+      { name: "Stella", easy: 160, normal: 290, hard: 490, expert: 680, master: 870, append: null, mv: "3D" },
+      { name: "Peaky Peaky", easy: 140, normal: 250, hard: 420, expert: 600, master: 780, append: 950, mv: "3D" },
+      
+      // MORE MORE JUMP! Songs
+      { name: "More! Jump! More!", easy: 115, normal: 210, hard: 360, expert: 520, master: 680, append: null, mv: "3D" },
+      { name: "Color of Drops", easy: 130, normal: 240, hard: 410, expert: 590, master: 760, append: null, mv: "3D" },
+      { name: "Ifuudoudou", easy: 165, normal: 300, hard: 510, expert: 710, master: 910, append: null, mv: "3D" },
+      { name: "Marshmary", easy: 125, normal: 230, hard: 390, expert: 560, master: 730, append: null, mv: "2D" },
+      { name: "Nijiro Stories", easy: 150, normal: 270, hard: 450, expert: 630, master: 810, append: null, mv: "3D" },
+      { name: "Dream Place", easy: 135, normal: 245, hard: 415, expert: 595, master: 770, append: 930, mv: "3D" },
+      
+      // Vivid BAD SQUAD Songs
+      { name: "Rad Dogs", easy: 140, normal: 250, hard: 420, expert: 600, master: 780, append: null, mv: "3D" },
+      { name: "Ready Steady", easy: 170, normal: 310, hard: 530, expert: 740, master: 950, append: null, mv: "3D" },
+      { name: "Gimme×Gimme", easy: 160, normal: 290, hard: 490, expert: 680, master: 870, append: null, mv: "3D" },
+      { name: "Forward", easy: 145, normal: 260, hard: 440, expert: 620, master: 800, append: null, mv: "2D" },
+      { name: "Beat Eater", easy: 175, normal: 320, hard: 550, expert: 770, master: 990, append: null, mv: "3D" },
+      { name: "Awake Now", easy: 155, normal: 280, hard: 470, expert: 650, master: 830, append: 1010, mv: "3D" },
+      
+      // Wonderlands x Showtime Songs
+      { name: "As You Like It", easy: 120, normal: 220, hard: 380, expert: 550, master: 720, append: null, mv: "3D" },
+      { name: "Mr. Showtime", easy: 150, normal: 270, hard: 450, expert: 630, master: 810, append: null, mv: "3D" },
+      { name: "Tondemo Wonderz", easy: 180, normal: 330, hard: 570, expert: 800, master: 1030, append: null, mv: "3D" },
+      { name: "Star Parade", easy: 130, normal: 240, hard: 410, expert: 590, master: 760, append: null, mv: "2D" },
+      { name: "What's Up? Pop!", easy: 165, normal: 300, hard: 510, expert: 710, master: 910, append: null, mv: "3D" },
+      { name: "Nonsense Bungaku", easy: 170, normal: 310, hard: 530, expert: 740, master: 950, append: 1150, mv: "3D" },
+      
+      // 25-ji, Nightcord de. Songs
+      { name: "Kanade Tomosu Sora", easy: 125, normal: 230, hard: 390, expert: 560, master: 730, append: null, mv: "3D" },
+      { name: "IDSMILE", easy: 155, normal: 280, hard: 470, expert: 650, master: 830, append: null, mv: "3D" },
+      { name: "Bocca della Verita", easy: 185, normal: 340, hard: 590, expert: 830, master: 1070, append: null, mv: "3D" },
+      { name: "Gehenna", easy: 140, normal: 250, hard: 420, expert: 600, master: 780, append: null, mv: "2D" },
+      { name: "Cellphone Love Story", easy: 160, normal: 290, hard: 490, expert: 680, master: 870, append: null, mv: "3D" },
+      { name: "Venom", easy: 175, normal: 320, hard: 550, expert: 770, master: 990, append: 1210, mv: "3D" },
+      
+      // Additional popular songs
+      { name: "Hitorinbo Envy", easy: 110, normal: 200, hard: 350, expert: 500, master: 650, append: null, mv: "2D" },
+      { name: "Charles", easy: 145, normal: 260, hard: 440, expert: 620, master: 800, append: null, mv: "3D" },
+      { name: "Bring It On", easy: 170, normal: 310, hard: 530, expert: 740, master: 950, append: null, mv: "3D" },
+      { name: "Miku", easy: 135, normal: 245, hard: 415, expert: 595, master: 770, append: null, mv: "3D" },
+      { name: "The Intense Voice of Hatsune Miku", easy: 200, normal: 370, hard: 650, expert: 920, master: 1200, append: null, mv: "3D" },
+      { name: "Racing Into The Night", easy: 165, normal: 300, hard: 510, expert: 710, master: 910, append: null, mv: "3D" },
+      { name: "King", easy: 155, normal: 280, hard: 470, expert: 650, master: 830, append: null, mv: "3D" },
+      { name: "Ghost Rule", easy: 175, normal: 320, hard: 550, expert: 770, master: 990, append: null, mv: "3D" },
+      { name: "Rolling Girl", easy: 190, normal: 350, hard: 610, expert: 860, master: 1120, append: null, mv: "3D" },
+      { name: "Remote Control", easy: 140, normal: 250, hard: 420, expert: 600, master: 780, append: null, mv: "2D" },
+      { name: "Teo", easy: 180, normal: 330, hard: 570, expert: 800, master: 1030, append: null, mv: "3D" },
+      { name: "Odo", easy: 160, normal: 290, hard: 490, expert: 680, master: 870, append: null, mv: "3D" },
+      { name: "Love Trial", easy: 150, normal: 270, hard: 450, expert: 630, master: 810, append: null, mv: "3D" },
+      { name: "Patchwork Staccato", easy: 130, normal: 240, hard: 410, expert: 590, master: 760, append: null, mv: "2D" },
+      { name: "Jishoumushoku", easy: 170, normal: 310, hard: 530, expert: 740, master: 950, append: null, mv: "3D" },
+      { name: "Aun no Beats", easy: 185, normal: 340, hard: 590, expert: 830, master: 1070, append: null, mv: "3D" },
+      { name: "Doctor=Funk Beat", easy: 155, normal: 280, hard: 470, expert: 650, master: 830, append: null, mv: "3D" },
+      { name: "Hibana", easy: 175, normal: 320, hard: 550, expert: 770, master: 990, append: null, mv: "3D" },
+      { name: "Lower", easy: 165, normal: 300, hard: 510, expert: 710, master: 910, append: null, mv: "3D" }
+    ];
+
+    // Songs button functionality
+    const songsBtn = document.getElementById('songs-btn');
+    const songsModal = document.getElementById('songs-modal');
+    const closeSongsBtn = document.getElementById('close-songs');
+
+    songsBtn.addEventListener('click', () => {
+      songsModal.classList.add('active');
+    });
+
+    closeSongsBtn.addEventListener('click', () => {
+      songsModal.classList.remove('active');
+    });
+
+    // Close songs modal when clicking outside the content
+    songsModal.addEventListener('click', (e) => {
+      if (e.target === songsModal) {
+        songsModal.classList.remove('active');
+      }
+    });
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (gameModal.classList.contains('active')) {
+          gameModal.classList.remove('active');
+        }
+        if (charactersModal.classList.contains('active')) {
+          charactersModal.classList.remove('active');
+        }
+        if (songsModal.classList.contains('active')) {
+          songsModal.classList.remove('active');
+        }
+      }
+    });
+
+    // Populate songs table
+    function populateSongsTable(songs) {
+      const songsBody = document.getElementById('songs-body');
+      songsBody.innerHTML = '';
+      
+      songs.forEach(song => {
+        const row = document.createElement('tr');
+        
+        // Song name
+        const nameCell = document.createElement('td');
+        nameCell.className = 'song-name';
+        nameCell.textContent = song.name;
+        
+        // Difficulties
+        const diffCell = document.createElement('td');
+        diffCell.className = 'difficulty-cell';
+        
+        const difficulties = [
+          { label: 'Easy', value: song.easy, className: 'difficulty-easy' },
+          { label: 'Normal', value: song.normal, className: 'difficulty-normal' },
+          { label: 'Hard', value: song.hard, className: 'difficulty-hard' },
+          { label: 'Expert', value: song.expert, className: 'difficulty-expert' },
+          { label: 'Master', value: song.master, className: 'difficulty-master' }
+        ];
+        
+        if (song.append) {
+          difficulties.push({ label: 'APPEND', value: song.append, className: 'difficulty-append' });
+        }
+        
+        difficulties.forEach(diff => {
+          if (diff.value) {
+            const diffRow = document.createElement('div');
+            diffRow.className = 'difficulty-row';
+            
+            const labelSpan = document.createElement('span');
+            labelSpan.className = 'difficulty-label';
+            labelSpan.textContent = diff.label;
+            
+            const valueSpan = document.createElement('span');
+            valueSpan.className = diff.className;
+            valueSpan.textContent = diff.value;
+            
+            diffRow.appendChild(labelSpan);
+            diffRow.appendChild(valueSpan);
+            diffCell.appendChild(diffRow);
+          }
+        });
+        
+        // Total notes (show master or expert if no master)
+        const notesCell = document.createElement('td');
+        notesCell.textContent = song.master || song.expert || song.hard;
+        
+        // MV type
+        const mvCell = document.createElement('td');
+        const mvSpan = document.createElement('span');
+        mvSpan.className = song.mv === '3D' ? 'mv-type mv-3d' : 'mv-type mv-2d';
+        mvSpan.textContent = song.mv;
+        mvCell.appendChild(mvSpan);
+        
+        // Append cells to row
+        row.appendChild(nameCell);
+        row.appendChild(diffCell);
+        row.appendChild(notesCell);
+        row.appendChild(mvCell);
+        
+        songsBody.appendChild(row);
+      });
+    }
+
+    // Search functionality
+    const songSearch = document.getElementById('song-search');
+    songSearch.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filteredSongs = songsData.filter(song => 
+        song.name.toLowerCase().includes(searchTerm)
+      );
+      populateSongsTable(filteredSongs);
+    });
+
+    // Initial population of songs table
+    populateSongsTable(songsData);
+  </script>
+</body>
+</html>
